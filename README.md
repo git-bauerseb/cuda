@@ -2,10 +2,24 @@
 
 ![](./notebooks/fft_comp.png)
 
+```
+nvidia-smi --query-gpu=compute_cap && \
+nvcc gemm.cu common.cu -o p \
+    -gencode=arch=compute_75,code=sm_75 \
+    -lcublas
+```
 
 
-## Tricks
+## Implementation - Benchmarks
 
+GEMM (C = alpha*A*B + beta*C)
+for A, (1024x1024)
+- V00 (Naive):      105.289154 ms
+- V01 (Coalescing): 10.251516 ms
+- V0x (cuBLAS):     1.742542  ms
+
+
+## Tricks/Readings
 
 ### FFT Bit Reversal
 
