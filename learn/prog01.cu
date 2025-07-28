@@ -1,17 +1,5 @@
 #include <stdio.h>
-
-#define cudaCheckErrors(msg) \
-    do { \
-        cudaError_t __err = cudaGetLastError(); \
-        if (__err != cudaSuccess) { \
-            fprintf(stderr, "Fatal error: %s (%s at %s:%d)\n", \
-                msg, cudaGetErrorString(__err), \
-                __FILE__, __LINE__); \
-            fprintf(stderr, "Aborting\n"); \
-            exit(1); \
-        } \
-    } while (0)
-
+#include "common.hu"
 
 const int N = 2048*2048;
 const int BLOCK_SIZE = 1024;
