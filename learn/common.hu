@@ -1,19 +1,39 @@
 #include <algorithm>
 using namespace std;
 
-#define cudaCheckErrors(msg) \
-    do { \
-        cudaError_t __err = cudaGetLastError(); \
-        if (__err != cudaSuccess) { \
-            fprintf(stderr, "Fatal error: %s (%s at %s:%d)\n", \
-                msg, cudaGetErrorString(__err), \
-                __FILE__, __LINE__); \
-            fprintf(stderr, "Aborting\n"); \
-            exit(1); \
-        } \
+#define CUDA_CHECK(call)                                                          \
+    do {                                                                          \
+        cudaError_t err = call;                                                   \
+        if (err != cudaSuccess) {                                                 \
+            fprintf(stderr, "CUDA error at %s:%d: %s\n", __FILE__, __LINE__,      \
+                    cudaGetErrorString(err));                                     \
+            exit(EXIT_FAILURE);                                                   \
+        }                                                                         \
     } while (0)
 
-template<typename T>
-void fillOnes(T *x, int n) {
-    fill_n(x, n, 1);
-}
+#define CUBLAS_CHECK(call)                                                        \
+    do {                                                                          \
+        cublasStatus_t status = call;                                             \
+        if (status != CUBLAS_STATUS_SUCCESS) {                                    \
+            fprintf(stderr, "cuBLAS error at %s:%d: ", __FILE__, __LINE__);       \
+            if (status == CUBLAS_STATUS_NOT_INITIALIZED) fprintf(stderr, "CUBLAS_STATUS_NOT_INITIALIZED\n"); \
+            else if (status == CUBLAS_STATUS_ALLOC_FAILED) fprintf(stderr, "CUBLAS_STATUS_ALLOC_FAILED\n"); \
+            else if (status == CUBLAS_STATUS_INVALID_VALUE) fprintf(stderr, "CUBLAS_STATUS_INVALID_VALUE\n"); \
+            else if (status == CUBLAS_STATUS_ARCH_MISMATCH) fprintf(stderr, "CUBLAS_STATUS_ARCH_MISMATCH\n"); \
+            else if (status == CUBLAS_STATUS_MAPPING_ERROR) fprintf(stderr, "CUBLAS_STATUS_MAPPING_ERROR\n"); \
+            else if (status == CUBLAS_STATUS_EXECUTION_FAILED) fprintf(stderr, "CUBLAS_STATUS_EXECUTION_FAILED\n"); \
+            else if (status == CUBLAS_STATUS_INTERNAL_ERROR) fprintf(stderr, "CUBLAS_STATUS_INTERNAL_ERROR\n"); \
+            else if (status == CUBLAS_STATUS_NOT_SUPPORTED) fprintf(stderr, "CUBLAS_STATUS_NOT_SUPPORTED\n"); \
+            else if (status == CUBLAS_STATUS_LICENSE_ERROR) fprintf(stderr, "CUBLAS_STATUS_LICENSE_ERROR\n"); \
+            else fprintf(stderr, "Unknown cuBLAS error\n");                       \
+            exit(EXIT_FAILURE);                                                   \
+        }                                                                         \
+    } while (0)
+
+void fillOnes(float *vec, int n);
+void fillOnes(int *vec, int n);
+
+void fillRandomized(float *mat, int n);
+
+
+void printMatrix(float *mat, int m, int n);

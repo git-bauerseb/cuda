@@ -42,7 +42,6 @@ int32_t main() {
     fillOnes(h_in, N+2*RADIUS);
     fillOnes(h_out, N+2*RADIUS);
 
-
     cudaMalloc((void**)&d_in, size);
     cudaMalloc((void**)&d_out, size);
 
