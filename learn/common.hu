@@ -1,5 +1,40 @@
+#include <cstdio>
 #include <algorithm>
-using namespace std;
+
+struct complex {
+	__host__ __device__ complex(float re, float im = 0)
+        : m_re{re}, m_im{im} {}
+
+	float m_re, m_im;
+};
+
+inline __host__ __device__ complex operator+(const complex &a, const complex &b) {
+	return complex(a.m_re + b.m_re, a.m_im + b.m_im);
+}
+
+inline __host__ __device__ complex operator-(const complex &a) {
+    return complex(-a.m_re, -a.m_im);
+}
+
+inline __host__ __device__ complex operator-(const complex &a, const complex &b) {
+	return complex(a.m_re - b.m_re, a.m_im - b.m_im);
+}
+
+inline __host__ __device__ complex operator*(const complex &a, const complex &b) {
+	return complex(a.m_re * b.m_re - a.m_im * b.m_im, a.m_im * b.m_re + a.m_re * b.m_im);
+}
+
+inline __host__ __device__ float abs2(const complex &a) {
+	return a.m_re * a.m_re + a.m_im * a.m_im;
+}
+
+inline __host__ __device__ complex operator/(const complex &a, const complex &b) {
+	float invabs2 = 1 / abs2(b);
+	return complex((a.m_re * b.m_re + a.m_im * b.m_im) * abs2(b),
+								 (a.m_im * b.m_re - b.m_im * a.m_re) * abs2(b));
+}
+
+
 
 #define CUDA_CHECK(call)                                                          \
     do {                                                                          \
@@ -32,8 +67,6 @@ using namespace std;
 
 void fillOnes(float *vec, int n);
 void fillOnes(int *vec, int n);
-
 void fillRandomized(float *mat, int n);
-
 
 void printMatrix(float *mat, int m, int n);

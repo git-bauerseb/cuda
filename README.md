@@ -1,7 +1,13 @@
 # CUDA Playground
 
-![](./notebooks/fft_comp.png)
-![](./imgs/output.png)
+## Visualizations
+
+### Offsetting/Strided Global Memory access
+![](./imgs/coalescing.png)
+
+### FFT Visualization: NumPy vs CPU
+![](./imgs/fft.png)
+
 
 ```
 nvidia-smi --query-gpu=compute_cap && \
@@ -9,6 +15,14 @@ nvcc gemm.cu common.cu -o p \
     -gencode=arch=compute_75,code=sm_75 \
     -lcublas
 ```
+
+
+## Algorithms/Techniques Implemented
+- Global memory coalescing 
+- Mandelbrot (Naive)
+- GEMM (somewhat optimized)
+- FFT (CPU-only)
+
 
 
 ## Implementation - Benchmarks

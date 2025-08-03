@@ -262,9 +262,6 @@ int32_t main() {
     //    cublasGEMMFP32(handle, 1.0, 0.0, d_a, d_b, d_c, N, N, N);
     // }
     
-
-    
-    
     cudaEventRecord(end);
 
     cudaEventSynchronize(beg);
