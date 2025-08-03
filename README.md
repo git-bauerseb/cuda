@@ -1,6 +1,7 @@
 # CUDA Playground
 
 ![](./notebooks/fft_comp.png)
+![](./imgs/output.png)
 
 ```
 nvidia-smi --query-gpu=compute_cap && \
@@ -21,6 +22,12 @@ V01 (Coalescing)       10.251516 ms
 V02 (Shared Memory)    6.875430 ms
 V0x (cuBLAS)           1.742542  ms
 ```
+
+Mandelbrot (4096x4096) - Naive
+```
+42.751678 ms
+```
+
 
 ## Tricks/Readings
 
